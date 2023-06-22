@@ -94,7 +94,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
-        exit()
+        return True
 
     def help_quit(self):
         """ Prints the help documentation for quit  """
@@ -103,7 +103,7 @@ class HBNBCommand(cmd.Cmd):
     def do_EOF(self, arg):
         """ Handles EOF to exit program """
         print()
-        exit()
+        return True
 
     def help_EOF(self):
         """ Prints the help documentation for EOF """
@@ -113,16 +113,30 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+    def do_create(self, arg):
+        """ Create an object of any class
+        
+        Usage: create <Class name>
+            OR create <Class name> <param1> <param2> <param3> ...
+        Param syntax: <key name>=<value>
+        """
+        if not arg:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        tokens = arg.split()
+        if tokens[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+
+        new_instance = HBNBCommand.classes[tokens[0]]()
+        if len(tokens) > 1:
+            for i in range(1, len(tokens)):
+                if "=" in tokens[i]:
+                    key, value = tokens[i].split("=")
+                    value = value.replace("_", " ").replace('"', '')
+                    if key in HBNBCommand.types:
+                        value = HBNBCommand.types[key](value)
+                    setattr(new_instance, key, value)
         print(new_instance.id)
         storage.save()
 
