@@ -36,10 +36,12 @@ class DBStorage:
         """
         from ..city import City
         from ..state import State
+        from ..user import User
 
         if cls is None:
             objs = self.__session.query(State).all()
             objs.extend(self.__session.query(City).all())
+            objs.extend(self.__session.query(User).all())
         else:
             objs = self.__session.query(cls).all()
 
@@ -75,6 +77,7 @@ class DBStorage:
         from ..base_model import Base
         from ..city import City
         from ..state import State
+        from ..user import User
 
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
