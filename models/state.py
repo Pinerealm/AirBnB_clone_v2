@@ -17,14 +17,14 @@ class State(BaseModel, Base):
     else:
         name = ""
 
-    @property
-    def cities(self):
-        """ Gets the list of cities associated with the current state.
-        """
-        from models import storage
-        from models.city import City
-        city_list = []
-        for value in storage.all(City).values():
-            if value.state_id == self.id:
-                city_list.append(value)
-        return city_list
+        @property
+        def cities(self):
+            """ Gets the list of cities associated with the current state.
+            """
+            from models import storage
+            from models.city import City
+            city_list = []
+            for value in storage.all(City).values():
+                if value.state_id == self.id:
+                    city_list.append(value)
+            return city_list
