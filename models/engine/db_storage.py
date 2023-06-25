@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """The DBStorage module
 """
-from models.base_model import Base
+from ..base_model import Base
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -72,7 +72,7 @@ class DBStorage:
         """Creates all tables in the database and creates the current
         database session
         """
-        from ..base_model import BaseModel, Base
+        from ..base_model import Base
         from ..city import City
         from ..state import State
 

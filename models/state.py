@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
-from models.base_model import BaseModel, Base
-from models import storage_type
+from .base_model import BaseModel, Base
+from models import storage_type, storage
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
@@ -21,8 +21,7 @@ class State(BaseModel, Base):
         def cities(self):
             """ Gets the list of cities associated with the current state.
             """
-            from models import storage
-            from models.city import City
+            from .city import City
             city_list = []
             for value in storage.all(City).values():
                 if value.state_id == self.id:
