@@ -38,12 +38,14 @@ class DBStorage:
         from ..state import State
         from ..user import User
         from ..place import Place
+        from ..review import Review
 
         if cls is None:
             objs = self.__session.query(State).all()
             objs.extend(self.__session.query(City).all())
             objs.extend(self.__session.query(User).all())
             objs.extend(self.__session.query(Place).all())
+            objs.extend(self.__session.query(Review).all())
         else:
             objs = self.__session.query(cls).all()
 
@@ -81,6 +83,7 @@ class DBStorage:
         from ..state import State
         from ..user import User
         from ..place import Place
+        from ..review import Review
 
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,

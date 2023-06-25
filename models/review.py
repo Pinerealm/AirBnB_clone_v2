@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ Review module for the HBNB project """
-from .base_model import BaseModel
+from .base_model import BaseModel, Base
 from models import storage_type
 from sqlalchemy import Column, String, ForeignKey
 
