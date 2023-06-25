@@ -39,6 +39,7 @@ class DBStorage:
         from ..user import User
         from ..place import Place
         from ..review import Review
+        from ..amenity import Amenity
 
         if cls is None:
             objs = self.__session.query(State).all()
@@ -46,6 +47,7 @@ class DBStorage:
             objs.extend(self.__session.query(User).all())
             objs.extend(self.__session.query(Place).all())
             objs.extend(self.__session.query(Review).all())
+            objs.extend(self.__session.query(Amenity).all())
         else:
             objs = self.__session.query(cls).all()
 
@@ -84,6 +86,7 @@ class DBStorage:
         from ..user import User
         from ..place import Place
         from ..review import Review
+        from ..amenity import Amenity
 
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
