@@ -16,6 +16,7 @@ class TestConsole(unittest.TestCase):
         """Set up for the following test methods
         """
         self.console = HBNBCommand()
+        os.chdir("/tmp")
         try:
             os.remove("file.json")
         except FileNotFoundError:

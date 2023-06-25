@@ -12,7 +12,7 @@ class FileStorage:
         """Returns a dictionary of models currently in storage
 
         Args:
-            cls (str): The name of the class to filter for
+            cls (class): The class to filter for
         """
         temp = {}
         if cls is not None:
@@ -33,7 +33,7 @@ class FileStorage:
     def save(self):
         """Saves storage dictionary to file"""
         temp = {}
-        with open(self.__file_path, 'w') as f:
+        with open(self.__file_path, 'w', encoding='utf-8') as f:
             temp.update(self.__objects)
             for key, val in temp.items():
                 temp[key] = val.to_dict()
@@ -60,7 +60,7 @@ class FileStorage:
                 temp = json.load(f)
                 for key, val in temp.items():
                     self.all()[key] = classes[val['__class__']](**val)
-        except FileNotFoundError:
+        except (FileNotFoundError, ValueError):
             pass
 
     def delete(self, obj=None):
