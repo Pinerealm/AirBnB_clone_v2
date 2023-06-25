@@ -28,13 +28,13 @@ class BaseModel:
         if not kwargs:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.utcnow()
-            self.updated_at = datetime.now()
+            self.updated_at = self.created_at
 
         else:
             for key, value in kwargs.items():
                 if key in ["created_at", "updated_at"]:
                     value = datetime.fromisoformat(value)
-                if key not in ["__class__", "_sa_instance_state"]:
+                if key != "__class__":
                     setattr(self, key, value)
 
     def __str__(self):
