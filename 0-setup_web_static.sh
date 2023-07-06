@@ -3,20 +3,18 @@
 
 # Install Nginx if it not already installed
 sudo apt-get update
-if ! dpkg -s nginx &> /dev/null; then
-    sudo apt-get install -y nginx
-fi
+sudo apt-get install -y nginx
 
 # Create the folder /data and its subfolders
-if [ ! -d "/data/web_static/releases/test/" ]; then
-    sudo mkdir -p /data/web_static/releases/test/
+if [ ! -d "/data/web_static/releases/test" ]; then
+    sudo mkdir -p /data/web_static/releases/test
 fi
 
-if [ ! -d "/data/web_static/shared/" ]; then
-    sudo mkdir /data/web_static/shared/
+if [ ! -d "/data/web_static/shared" ]; then
+    sudo mkdir /data/web_static/shared
 fi
 
-# Change ownership of the /data/ folder to the ubuntu user and group
+# Change ownership of the /data folder to the ubuntu user and group
 sudo chown -R ubuntu:ubuntu /data
 
 # Create a test HTML file in the test subfolder
@@ -36,14 +34,14 @@ fi
 ln -sf /data/web_static/releases/test /data/web_static/current
 
 # Map the /hbnb_static/ path to the 'current' symbolic link
-CONTEXT="\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;"
+CONTEXT="\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;"
 CONTEXT+="\n\t}\n"
 FILE="/etc/nginx/sites-available/default"
 
-if grep -q "location /hbnb_static/ {" $FILE; then
+if grep -q "location /hbnb_static {" $FILE; then
     echo "Context already exists"
 else
-    sudo sed -i "/PHP scripts to/i\ $CONTEXT" $FILE
+    sudo sed -i --follow-symlinks "/PHP scripts to/i\ $CONTEXT" $FILE
 fi
 
 # Restart Nginx
