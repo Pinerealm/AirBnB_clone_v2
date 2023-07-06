@@ -17,8 +17,8 @@ def do_pack():
     file_name = "versions/web_static_{}.tgz".format(date)
 
     print("Packing web_static to {}".format(file_name))
-    local("tar -cvzf {} web_static".format(file_name))
+    result = local("tar -cvzf {} web_static".format(file_name))
     file_size = os.stat(file_name).st_size
     print("web_static packed: {} -> {}Bytes".format(file_name, file_size))
 
-    return file_name if os.path.exists(file_name) else None
+    return file_name if result.succeeded else None
