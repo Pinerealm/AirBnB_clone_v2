@@ -81,5 +81,3 @@ else
     sudo service nginx start
     sudo nginx -s reload
 fi
-
-exit 0
