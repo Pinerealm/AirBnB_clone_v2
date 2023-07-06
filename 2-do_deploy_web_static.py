@@ -11,23 +11,6 @@ env.user = "ubuntu"
 env.key_filename = "~/.ssh/id_rsa"
 
 
-def do_pack():
-    """Generates a .tgz archive from the contents of the web_static folder
-    of AirBnB_clone_v2
-    """
-    if not os.path.exists("versions"):
-        os.makedirs("versions")
-    date = datetime.now().strftime("%Y%m%d%H%M%S")
-    file_name = "versions/web_static_{}.tgz".format(date)
-
-    print("Packing web_static to {}".format(file_name))
-    result = local("tar -cvzf {} web_static".format(file_name))
-    file_size = os.stat(file_name).st_size
-    print("web_static packed: {} -> {}Bytes".format(file_name, file_size))
-
-    return file_name if result.succeeded else None
-
-
 def do_deploy(archive_path):
     """Distributes an archive to specified web servers
     """
