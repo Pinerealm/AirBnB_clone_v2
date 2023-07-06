@@ -6,16 +6,25 @@ sudo apt-get update
 sudo apt-get install -y nginx
 
 # Create the folder /data and its subfolders
-if [ ! -d "/data/web_static/releases/test" ]; then
-    sudo mkdir -p /data/web_static/releases/test
+if [ ! -d "/data" ]; then
+    sudo mkdir /data
+fi
+
+if [ ! -d "/data/web_static" ]; then
+    sudo mkdir /data/web_static
+fi
+
+if [ ! -d "/data/web_static/releases" ]; then
+    sudo mkdir /data/web_static/releases
 fi
 
 if [ ! -d "/data/web_static/shared" ]; then
     sudo mkdir /data/web_static/shared
 fi
 
-# Change ownership of the /data folder to the ubuntu user and group
-sudo chown -R "$USER":"$USER" /data
+if [ ! -d "/data/web_static/releases/test" ]; then
+    sudo mkdir /data/web_static/releases/test
+fi
 
 # Create a test HTML file in the test subfolder
 echo "<html>
@@ -23,15 +32,36 @@ echo "<html>
   </head>
   <body>
     Holberton School
-  </body>
-</html>" > /data/web_static/releases/test/index.html
+</body>" | sudo tee /data/web_static/releases/test/index.html
+
+# # Create the folder /data and its subfolders
+# if [ ! -d "/data/web_static/releases/test" ]; then
+#     sudo mkdir -p /data/web_static/releases/test
+# fi
+
+# if [ ! -d "/data/web_static/shared" ]; then
+#     sudo mkdir /data/web_static/shared
+# fi
 
 # Create a symbolic link to the /data/web_static/releases/test/ folder
 if [ -L "/data/web_static/current" ]; then
     sudo rm /data/web_static/current
 fi
 
-ln -sf /data/web_static/releases/test /data/web_static/current
+sudo ln -sf /data/web_static/releases/test /data/web_static/current
+
+# Change ownership of the /data folder to the ubuntu user and group
+sudo chown -R ubuntu:ubuntu /data
+
+# # Create a test HTML file in the test subfolder
+# echo "<html>
+#   <head>
+#   </head>
+#   <body>
+#     Holberton School
+#   </body>
+# </html>" > /data/web_static/releases/test/index.html
+
 
 # Map the /hbnb_static/ path to the 'current' symbolic link
 CONTEXT="\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;"
@@ -51,3 +81,5 @@ else
     sudo service nginx start
     sudo nginx -s reload
 fi
+
+exit 0
