@@ -10,14 +10,6 @@ env.hosts = ["100.25.167.113", "54.237.105.147"]
 env.user = "ubuntu"
 env.key_filename = "~/.ssh/id_rsa"
 
-#!/usr/bin/python3
-"""A Fabric script that generates a .tgz archive from the contents of
-AirBnB_clone_v2 web_static folder
-"""
-from datetime import datetime
-from fabric.api import local
-import os
-
 
 def do_pack():
     """Generates a .tgz archive from the contents of the web_static folder
@@ -35,6 +27,7 @@ def do_pack():
 
     return file_name if result.succeeded else None
 
+
 def do_deploy(archive_path):
     """Distributes an archive to specified web servers
     """
@@ -50,7 +43,7 @@ def do_deploy(archive_path):
         run("mkdir -p {}".format(dest))
         run("tar -xzf /tmp/{} -C {}/".format(file_name, dest))
         run("rm /tmp/{}".format(file_name))
-        
+
         run("mv {}/web_static/* {}/".format(dest, dest))
         run("rm -rf {}/web_static".format(dest))
         run("rm -rf /data/web_static/current")
