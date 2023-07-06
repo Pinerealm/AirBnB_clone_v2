@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """A Fabric script that distributes an archive to specified web servers
 """
-from fabric.api import env, put, run, local
+from fabric.api import env, put, run
 import os
 
 
