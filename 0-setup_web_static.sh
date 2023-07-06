@@ -15,7 +15,7 @@ if [ ! -d "/data/web_static/shared" ]; then
 fi
 
 # Change ownership of the /data folder to the ubuntu user and group
-sudo chown -R ubuntu:ubuntu /data
+sudo chown -R "$USER":"$USER" /data
 
 # Create a test HTML file in the test subfolder
 echo "<html>
