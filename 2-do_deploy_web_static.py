@@ -5,9 +5,9 @@ from fabric.api import env, put, run
 import os
 
 
-env.hosts = ["100.25.167.113", "54.237.105.147"]
-env.user = "ubuntu"
-env.key_filename = "~/.ssh/id_rsa"
+# env.hosts = ["100.25.167.113", "54.237.105.147"]
+# env.user = "ubuntu"
+# env.key_filename = "~/.ssh/id_rsa"
 
 
 def do_deploy(archive_path):
