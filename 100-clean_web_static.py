@@ -3,7 +3,6 @@
 """
 from fabric.api import env, run, local
 from datetime import datetime
-import os
 
 
 env.hosts = ["100.25.167.113", "54.237.105.147"]
