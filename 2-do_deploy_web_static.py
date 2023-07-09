@@ -12,6 +12,12 @@ env.key_filename = "~/.ssh/id_rsa"
 
 def do_deploy(archive_path):
     """Distributes an archive to specified web servers
+
+    Args:
+        archive_path (str): Path to archive to be distributed
+
+    Returns:
+        bool: True if all operations were successful, False otherwise
     """
     if not os.path.exists(archive_path):
         return False
@@ -24,9 +30,9 @@ def do_deploy(archive_path):
         put(archive_path, "/tmp/")
         run("mkdir -p {}".format(dest))
         run("tar -xzf /tmp/{} -C {}/".format(file_name, dest))
-        run("rm /tmp/{}".format(file_name))
-
         run("mv {}/web_static/* {}/".format(dest, dest))
+
+        run("rm /tmp/{}".format(file_name))
         run("rm -rf {}/web_static".format(dest))
         run("rm -rf /data/web_static/current")
         run("ln -s {}/ /data/web_static/current".format(dest))
