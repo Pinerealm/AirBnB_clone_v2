@@ -72,42 +72,43 @@ file { '/etc/nginx/sites-available/default':
   ensure  => 'file',
   content =>
   "server {
-      listen 80 default_server;
-      listen [::]:80 default_server;
+          listen 80 default_server;
+          listen [::]:80 default_server;
 
-      root /var/www/html;
+          root /var/www/html;
 
-      # Add index.php to the list if you are using PHP
-      index index.html index.htm index.nginx-debian.html;
+          # Add index.php to the list if you are using PHP
+          index index.html index.htm index.nginx-debian.html;
 
-      server_name _;
+          server_name _;
 
-      location / {
-        # First attempt to serve request as file, then
-        # as directory, then fall back to displaying a 404.
-        try_files \$uri \$uri/ =404;
-      }
+          location / {
+                  # First attempt to serve request as file, then
+                  # as directory, then fall back to displaying a 404.
+                  try_files \$uri \$uri/ =404;
+          }
     
-      location /redirect_me {
-        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
-      }
+          location /redirect_me {
+                  return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+          }
 
-      error_page 404 /custom_404.html;
-      location = /custom_404.html {
-        root /usr/share/nginx/html;
-        internal;
-      }
+          error_page 404 /custom_404.html;
+          location = /custom_404.html {
+                  root /usr/share/nginx/html;
+                  internal;
+          }
 
-      location /hbnb_static {
-        alias /data/web_static/current/;
-      }
+          location /hbnb_static {
+                  alias /data/web_static/current/;
+          }
   }",
   notify  => Service['nginx'],
 }
 
 # 8. Restart nginx
 service { 'nginx':
-  ensure  => 'running',
-  enable  => 'true',
-  require => File['/etc/nginx/sites-available/default'],
+  ensure     => 'running',
+  enable     => 'true',
+  hasrestart => 'true',
+  require    => File['/etc/nginx/sites-available/default'],
 }
