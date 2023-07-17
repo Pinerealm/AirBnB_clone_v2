@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""A Fabric script that generates a .tgz archive from the contents of
+"""A Fabric script that generates a .tgz archive from the contents of the
 AirBnB_clone_v2 web_static folder
 """
 from datetime import datetime
@@ -15,7 +15,7 @@ def do_pack():
         str: Path to the archive created
     """
     if not os.path.isdir("versions"):
-        os.makedirs("versions")
+        os.mkdir("versions")
     date = datetime.now().strftime("%Y%m%d%H%M%S")
     file_name = "versions/web_static_{}.tgz".format(date)
 
