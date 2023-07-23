@@ -1,10 +1,12 @@
 #!/usr/bin/python3
-"""This module defines a class to manage file storage for hbnb clone"""
+"""This module defines a class to manage file storage for hbnb clone
+"""
 import json
 
 
 class FileStorage:
-    """This class manages storage of hbnb models in JSON format"""
+    """This class manages storage of hbnb models in JSON format
+    """
     __file_path = 'file.json'
     __objects = {}
 
@@ -31,7 +33,8 @@ class FileStorage:
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
 
     def save(self):
-        """Saves storage dictionary to file"""
+        """Saves storage dictionary to file
+        """
         temp = {}
         with open(self.__file_path, 'w', encoding='utf-8') as f:
             temp.update(self.__objects)
@@ -40,14 +43,15 @@ class FileStorage:
             json.dump(temp, f)
 
     def reload(self):
-        """Loads storage dictionary from file"""
-        from ..base_model import BaseModel
-        from ..user import User
-        from ..place import Place
-        from ..state import State
-        from ..city import City
+        """Loads file into storage dictionary
+        """
         from ..amenity import Amenity
+        from ..base_model import BaseModel
+        from ..city import City
+        from ..place import Place
         from ..review import Review
+        from ..state import State
+        from ..user import User
 
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
@@ -75,3 +79,8 @@ class FileStorage:
         if key in self.all():
             del self.all()[key]
             self.save()
+
+    def close(self):
+        """Deserialize JSON file to objects
+        """
+        self.reload()

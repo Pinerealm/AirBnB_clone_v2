@@ -19,7 +19,7 @@ class State(BaseModel, Base):
 
         @property
         def cities(self):
-            """ Gets the list of cities associated with the current state.
+            """Gets the list of cities associated with the current state.
             """
             from .city import City
             city_list = []

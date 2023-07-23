@@ -34,12 +34,12 @@ class DBStorage:
         Args:
             cls (class): The class to filter for
         """
+        from ..amenity import Amenity
         from ..city import City
-        from ..state import State
-        from ..user import User
         from ..place import Place
         from ..review import Review
-        from ..amenity import Amenity
+        from ..state import State
+        from ..user import User
 
         if cls is None:
             objs = self.__session.query(State).all()
@@ -80,16 +80,20 @@ class DBStorage:
         """Creates all tables in the database and creates the current
         database session
         """
+        from ..amenity import Amenity
         from ..base_model import Base
         from ..city import City
-        from ..state import State
-        from ..user import User
         from ..place import Place
         from ..review import Review
-        from ..amenity import Amenity
+        from ..state import State
+        from ..user import User
 
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
-        Session = scoped_session(session_factory)
-        self.__session = Session()
+        self.__session = scoped_session(session_factory)
+
+    def close(self):
+        """Closes the current database session
+        """
+        self.__session.remove()
