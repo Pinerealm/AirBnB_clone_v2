@@ -1,6 +1,8 @@
 #!/usr/bin/python3
-"""Displays 'HBNB' at the route /hbnb"""
+"""Displays 'C' followed by the value of the text variable
+"""
 from flask import Flask
+from markupsafe import escape
 app = Flask(__name__)
 
 
@@ -16,6 +18,14 @@ def hbnb():
     """Displays 'HBNB'
     """
     return 'HBNB'
+
+
+@app.route('/c/<text>', strict_slashes=False)
+def c(text):
+    """Displays 'C' followed by the value of the text variable.
+    Replaces underscores with spaces.
+    """
+    return 'C {}'.format(escape(text).replace('_', ' '))
 
 
 if __name__ == '__main__':
