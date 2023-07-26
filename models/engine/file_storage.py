@@ -1,11 +1,16 @@
 #!/usr/bin/python3
-"""This module defines a class to manage file storage for hbnb clone
+"""The FileStorage module
 """
 import json
 
 
 class FileStorage:
-    """This class manages storage of hbnb models in JSON format
+    """Serializes instances to a JSON file and deserializes from a JSON file
+    to instances
+
+    Attributes:
+        __file_path (str): The path to the JSON file
+        __objects (dict): A dictionary to store instantiated objects
     """
     __file_path = 'file.json'
     __objects = {}
@@ -25,7 +30,7 @@ class FileStorage:
         return self.__objects
 
     def new(self, obj):
-        """Adds new object to storage dictionary
+        """Adds a new object to the storage dictionary
 
         Args:
             obj: The object to add to storage
