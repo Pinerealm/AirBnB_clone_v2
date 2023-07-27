@@ -231,12 +231,12 @@ class TestConsole(unittest.TestCase):
 
         with patch('sys.stdout', new=StringIO()) as f:
             self.cns.onecmd("update BaseModel " + object_id +
-                                " first_name")
+                            " first_name")
             self.assertEqual("** value missing **\n", f.getvalue())
 
         with patch('sys.stdout', new=StringIO()) as f:
             self.cns.onecmd("update BaseModel " + object_id +
-                                " first_name \"Betty\"")
+                            " first_name \"Betty\"")
             self.assertEqual("", f.getvalue())
 
         with patch('sys.stdout', new=StringIO()) as f:
@@ -245,7 +245,7 @@ class TestConsole(unittest.TestCase):
 
         with patch('sys.stdout', new=StringIO()) as f:
             self.cns.onecmd("update BaseModel " + object_id +
-                                " first_name \"Holberton\"")
+                            " first_name \"Holberton\"")
             self.assertEqual("", f.getvalue())
 
         with patch('sys.stdout', new=StringIO()) as f:
