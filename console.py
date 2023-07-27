@@ -225,6 +225,7 @@ class HBNBCommand(cmd.Cmd):
 
         elif arg not in self.classes:
             print("** class doesn't exist **")
+            return
         else:
             for key, value in storage.all().items():
                 if storage_type == 'db':
