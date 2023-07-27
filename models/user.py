@@ -16,6 +16,8 @@ class User(BaseModel, Base):
         password (str): The user's password
         first_name (str): The user's first name
         last_name (str): The user's last name
+
+        places (list): The list of Place objects linked to the user (db only)
     """
     if storage_type == 'db':
         __tablename__ = 'users'
