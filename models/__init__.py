@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-"""This module instantiates an object of class FileStorage"""
+"""Instantiates a storage object, choosing between DBStorage and FileStorage
+"""
 import os
 
 

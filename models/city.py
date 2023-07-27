@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-""" City Module for HBNB project """
+"""The city module
+"""
 from .base_model import BaseModel, Base
 from models import storage_type
 from sqlalchemy import Column, String, ForeignKey
@@ -7,7 +8,12 @@ from sqlalchemy.orm import relationship
 
 
 class City(BaseModel, Base):
-    """ The city class, contains state ID and name
+    """Defines the City class, inherits from BaseModel and Base (SQLAlchemy)
+
+    Attributes:
+        name (str): The city name
+        state_id (str): The state id
+        places (list): The list of Place objects linked to the city (db only)
     """
     if storage_type == 'db':
         __tablename__ = "cities"

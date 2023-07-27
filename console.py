@@ -2,7 +2,7 @@
 """The console/command interpreter for the AirBnB_clone project
 """
 import cmd
-from models import storage
+from models import storage, storage_type
 from models.base_model import BaseModel
 from models.user import User
 
@@ -44,50 +44,6 @@ class HBNBCommand(cmd.Cmd):
         if not sys.__stdin__.isatty():
             print('(hbnb) ', end='')
         return line
-    #     _cmd = _cls = _id = _args = ''  # initialize line elements
-
-    #     # scan for general formating - i.e '.', '(', ')'
-    #     if not ('.' in line and '(' in line and ')' in line):
-    #         return line
-
-    #     try:  # parse line left to right
-    #         pline = line[:]  # parsed line
-
-    #         # isolate <class name>
-    #         _cls = pline[:pline.find('.')]
-
-    #         # isolate and validate <command>
-    #         _cmd = pline[pline.find('.') + 1:pline.find('(')]
-    #         if _cmd not in HBNBCommand.dot_cmds:
-    #             raise Exception
-
-    #         # if parentheses contain arguments, parse them
-    #         pline = pline[pline.find('(') + 1:pline.find(')')]
-    #         if pline:
-    #             # partition args: (<id>, [<delim>], [<*args>])
-    #             pline = pline.partition(', ')  # pline convert to tuple
-
-    #             # isolate _id, stripping quotes
-    #             _id = pline[0].replace('\"', '')
-    #             # possible bug here:
-    #             # empty quotes register as empty _id when replaced
-
-    #             # if arguments exist beyond _id
-    #             pline = pline[2].strip()  # pline is now str
-    #             if pline:
-    #                 # check for *args or **kwargs
-    #                 if pline[0] == '{' and pline[-1] == '}'\
-    #                         and type(eval(pline)) is dict:
-    #                     _args = pline
-    #                 else:
-    #                     _args = pline.replace(',', '')
-    #                     # _args = _args.replace('\"', '')
-    #         line = ' '.join([_cmd, _cls, _id, _args])
-
-    #     except Exception as mess:
-    #         pass
-    #     finally:
-    #         return line
 
     def parseline(self, line):
         """Reformats the command line for the advanced command syntax.
@@ -253,23 +209,33 @@ class HBNBCommand(cmd.Cmd):
         print("[Usage]: destroy <className> <objectId>\n")
 
     def do_all(self, arg):
-        """ Shows all objects, or all objects of a class"""
-        print_list = []
+        """Shows all objects, or all objects of a given class
+        """
+        """Displays the string representation of all instances or
+        all instances of a class
 
-        if arg:
-            cls = arg.split()[0]  # remove possible trailing args
-            if cls not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for value in storage.all(self.classes[cls]).values():
-                # del value.__dict__['_sa_instance_state']
-                print_list.append(value)
-        else:
+        Usage: all <class name> OR <class name>.all() OR all
+        """
+        output = []
+        if not arg:
             for value in storage.all().values():
-                # del value.__dict__['_sa_instance_state']
-                print_list.append(value)
+                if storage_type == 'db':
+                    del value.__dict__['_sa_instance_state']
+                output.append((value))
 
-        print('[{}]'.format(', '.join(str(x) for x in print_list)))
+        elif arg not in self.classes:
+            print("** class doesn't exist **")
+        else:
+            for key, value in storage.all().items():
+                if storage_type == 'db':
+                    del value.__dict__['_sa_instance_state']
+                if arg == key.split('.')[0]:
+                    output.append((value))
+        
+        print('[', end='')
+        for obj in output:
+            print(obj, end=', ' if obj != output[-1] else '')
+        print(']')
 
     def help_all(self):
         """ Help information for the all command """

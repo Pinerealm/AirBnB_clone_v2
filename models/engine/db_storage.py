@@ -9,6 +9,11 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 
 class DBStorage:
     """Defines the DBStorage class
+
+    Attributes:
+        __engine (sqlalchemy.engine.Engine): The working SQLAlchemy engine
+        __session (sqlalchemy.orm.session.Session): The working SQLAlchemy
+                                                    session
     """
     __engine = None
     __session = None
@@ -21,9 +26,9 @@ class DBStorage:
         HBNB_MYSQL_HOST = os.getenv('HBNB_MYSQL_HOST')
         HBNB_MYSQL_DB = os.getenv('HBNB_MYSQL_DB')
 
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                      format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD,
-                                             HBNB_MYSQL_HOST, HBNB_MYSQL_DB),
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
+                                      .format(HBNB_MYSQL_USER, HBNB_MYSQL_PWD,
+                                              HBNB_MYSQL_HOST, HBNB_MYSQL_DB),
                                       pool_pre_ping=True)
         if os.getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
@@ -63,7 +68,7 @@ class DBStorage:
         self.__session.add(obj)
 
     def save(self):
-        """Commits all changes of the current database session
+        """Commits all changes in the current database session
         """
         self.__session.commit()
 
@@ -81,7 +86,6 @@ class DBStorage:
         database session
         """
         from ..amenity import Amenity
-        from ..base_model import Base
         from ..city import City
         from ..place import Place
         from ..review import Review
