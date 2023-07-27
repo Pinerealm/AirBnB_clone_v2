@@ -32,7 +32,9 @@ class Place(BaseModel, Base):
         price_by_night (int): The price per night of the place
         latitude (float): The latitude of the place
         longitude (float): The longitude of the place
-        amenity_ids (list): A list of Amenity ids
+        reviews (list): The list of Review objects linked to a place (db only)
+        amenities (list): The list of Amenity objects linked to a place
+                          (db only)
     """
     if storage_type == 'db':
         __tablename__ = "places"
@@ -68,11 +70,10 @@ class Place(BaseModel, Base):
         price_by_night = 0
         latitude = 0.0
         longitude = 0.0
-        amenity_ids = []
 
         @property
         def reviews(self):
-            """ Gets the list of reviews associated with the current place.
+            """Gets the list of reviews associated with the current place.
             """
             from .review import Review
             from models import storage

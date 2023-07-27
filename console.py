@@ -231,7 +231,7 @@ class HBNBCommand(cmd.Cmd):
                     del value.__dict__['_sa_instance_state']
                 if arg == key.split('.')[0]:
                     output.append((value))
-        
+
         print('[', end='')
         for obj in output:
             print(obj, end=', ' if obj != output[-1] else '')

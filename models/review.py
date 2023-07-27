@@ -1,12 +1,18 @@
 #!/usr/bin/python3
-""" Review module for the HBNB project """
+"""The review module
+"""
 from .base_model import BaseModel, Base
 from models import storage_type
 from sqlalchemy import Column, String, ForeignKey
 
 
 class Review(BaseModel, Base):
-    """The review class
+    """Defines the Review class, inherits from BaseModel and Base (SQLAlchemy)
+
+    Attributes:
+        place_id (str): The place id
+        user_id (str): The user id
+        text (str): The review text
     """
     if storage_type == 'db':
         __tablename__ = "reviews"
@@ -15,6 +21,6 @@ class Review(BaseModel, Base):
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
 
     else:
+        text = ""
         place_id = ""
         user_id = ""
-        text = ""
