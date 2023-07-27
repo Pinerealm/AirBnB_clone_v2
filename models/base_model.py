@@ -20,8 +20,6 @@ class BaseModel:
         id = Column(String(60), nullable=False, primary_key=True)
         created_at = updated_at = Column(DateTime, nullable=False,
                                          default=datetime.utcnow())
-        # updated_at = Column(DateTime, nullable=False,
-        #                     default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Runs when a new instance is created
@@ -29,7 +27,6 @@ class BaseModel:
         if not kwargs:
             self.id = str(uuid4())
             self.created_at = self.updated_at = datetime.utcnow()
-            # self.updated_at = self.created_at
 
         else:
             if "id" not in kwargs:
