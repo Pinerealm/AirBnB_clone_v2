@@ -7,8 +7,8 @@ app = Flask(__name__)
 
 
 @app.teardown_appcontext
-def close_session():
-    """Closes the session
+def close_session(ctx):
+    """Closes the current session
     """
     storage.close()
 
@@ -17,7 +17,9 @@ def close_session():
 def states_list():
     """Displays a list of all State objects in the database, sorted by name
     """
-    states = storage.all("State")
+    from models.state import State
+
+    states = storage.all(State).values()
     return render_template('7-states_list.html', states=states)
 
 
