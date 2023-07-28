@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Displays a list of all State objects in the database
+"""Displays a list of cities by state.
 """
 from flask import Flask, render_template
 from models import storage
@@ -13,14 +13,14 @@ def close_session(ctx):
     storage.close()
 
 
-@app.route('/states_list', strict_slashes=False)
-def states_list():
-    """Displays a list of all State objects in the database, sorted by name
+@app.route('/cities_by_states', strict_slashes=False)
+def cities_by_states():
+    """Displays a list of cities by state
     """
     from models.state import State
 
     states = storage.all(State).values()
-    return render_template('7-states_list.html', states=states)
+    return render_template('8-cities_by_states.html', states=states)
 
 
 if __name__ == '__main__':
