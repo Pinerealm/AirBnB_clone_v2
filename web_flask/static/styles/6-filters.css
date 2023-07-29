@@ -52,6 +52,7 @@ button:hover {
 }
 
 .popover {
+    position: relative;
 	display: none;
     padding: 15px 0;
 	background-color: #FAFAFA;
@@ -62,6 +63,7 @@ button:hover {
     padding-bottom: 25px;
     overflow-y: scroll;
     max-height: 300px;
+    z-index: 100;
 }
 
 .popover h2 {
