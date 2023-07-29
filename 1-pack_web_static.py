@@ -21,7 +21,7 @@ def do_pack():
 
     print("Packing web_static to {}".format(file_name))
     with settings(warn_only=True):
-        result = local("tar -cvzf {} web_static".format(file_name))
+        result = local("tar --sort=name -cvzf {} web_static".format(file_name))
         if result.failed:
             return None
     file_size = os.stat(file_name).st_size
