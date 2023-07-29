@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Displays a list of cities by state.
+"""Make the filters dynamic
 """
 from flask import Flask, render_template
 from models import storage
@@ -13,14 +13,17 @@ def close_session(ctx):
     storage.close()
 
 
-@app.route('/cities_by_states', strict_slashes=False)
-def cities_by_states():
-    """Displays a list of cities by state
+@app.route('/hbnb_filters', strict_slashes=False)
+def hbnb_filters():
+    """Applies dynamic filters to the page
     """
     from models.state import State
+    from models.amenity import Amenity
 
     states = storage.all(State).values()
-    return render_template('8-cities_by_states.html', states=states)
+    amenities = storage.all(Amenity).values()
+    return render_template('10-hbnb_filters.html', states=states,
+                           amenities=amenities)
 
 
 if __name__ == '__main__':
