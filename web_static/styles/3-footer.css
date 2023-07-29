@@ -1,10 +1,17 @@
 footer {
-	position: fixed;
-	bottom: 0;
-	background-color: white;
-	height: 60px;
-	width: 100%;
-	text-align: center;
-	line-height: 30px;
-	border-top: 1px solid #CCCCCC;
+    text-align: center;
+    background-color: white;
+    border-top: 1px solid #CCCCCC;
+    height: 60px;
+    line-height: 30px;
+    white-space: nowrap;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
 }
+
+/* Alternative way to center the text vertically */
+/* footer p {
+    padding-top: 5px;
+    padding-bottom: 5px;
+} */

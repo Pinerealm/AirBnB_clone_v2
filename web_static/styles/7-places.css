@@ -1,10 +1,15 @@
 .places {
-	display: block;
-	margin: 45px auto;
 	text-align: center;
 }
 
-article {
+.places > h1 {
+	text-align: left;
+	width: 95%;
+	padding-left: 10px;
+	font-size: 30px;
+}
+
+.places > article {
 	display: inline-block;
 	width: 390px;
 	padding: 20px;
@@ -14,19 +19,7 @@ article {
 	text-align: center;
 }
 
-h1 {
-	float: left;
-	text-align: left;
-	width: 95%;
-	display: block;
-	margin-top: 0px;
-	margin-left: 20px;
-	margin-bottom: 5px;
+.places h2 {
 	font-size: 30px;
-}
-
-article h2 {
-	font-size: 30px;
-	padding: 0px;
 	margin: auto;
 }
