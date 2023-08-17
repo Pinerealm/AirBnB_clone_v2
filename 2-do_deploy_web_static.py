@@ -4,9 +4,9 @@
 from fabric.api import env, put, run
 import os
 
-# env.hosts = ["100.25.167.113", "54.237.105.147"]
-# env.user = "ubuntu"
-# env.key_filename = "~/.ssh/id_rsa"
+env.hosts = ["54.82.111.149", "54.237.105.147"]
+env.user = "ubuntu"
+env.key_filename = "~/.ssh/id_rsa"
 
 
 def do_deploy(archive_path):
@@ -19,6 +19,7 @@ def do_deploy(archive_path):
         bool: True if all operations were successful, False otherwise
     """
     if not os.path.exists(archive_path):
+        print("File not found")
         return False
 
     file_name = archive_path.split("/")[-1]
