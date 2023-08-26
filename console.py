@@ -209,10 +209,7 @@ class HBNBCommand(cmd.Cmd):
         print("[Usage]: destroy <className> <objectId>\n")
 
     def do_all(self, arg):
-        """Shows all objects, or all objects of a given class
-        """
-        """Displays the string representation of all instances or
-        all instances of a class
+        """Displays all objects, or all objects of a given class
 
         Usage: all <class name> OR <class name>.all() OR all
         """
@@ -221,7 +218,7 @@ class HBNBCommand(cmd.Cmd):
             for value in storage.all().values():
                 if storage_type == 'db':
                     del value.__dict__['_sa_instance_state']
-                output.append((value))
+                output.append(value)
 
         elif arg not in self.classes:
             print("** class doesn't exist **")
@@ -231,7 +228,7 @@ class HBNBCommand(cmd.Cmd):
                 if storage_type == 'db':
                     del value.__dict__['_sa_instance_state']
                 if arg == key.split('.')[0]:
-                    output.append((value))
+                    output.append(value)
 
         print('[', end='')
         for obj in output:
