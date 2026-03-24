@@ -78,38 +78,101 @@ class TestConsole(unittest.TestCase):
             self.cns.onecmd("create MyModel")
             self.assertEqual("** class doesn't exist **\n", f.getvalue())
 
+        # Test BaseModel creation
         with patch('sys.stdout', new=StringIO()) as f:
             self.cns.onecmd("create BaseModel")
-            self.assertEqual(36, len(f.getvalue().strip()))
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.cns.onecmd("create User")
-            self.assertEqual(36, len(f.getvalue().strip()))
+            obj_id = f.getvalue().strip()
+            self.assertEqual(str(UUID(obj_id)), obj_id)
+            key = "BaseModel." + obj_id
+            self.assertIn(key, storage.all())
 
+        # Test User creation with parameters
+        with patch('sys.stdout', new=StringIO()) as f:
+            params = ('email="test@example.com" password="password" '
+                      'first_name="John" last_name="Doe"')
+            self.cns.onecmd("create User " + params)
+            obj_id = f.getvalue().strip()
+            self.assertEqual(str(UUID(obj_id)), obj_id)
+
+            key = "User." + obj_id
+            self.assertIn(key, storage.all())
+            instance = storage.all()[key]
+            self.assertEqual(instance.email, "test@example.com")
+            self.assertEqual(instance.password, "password")
+            self.assertEqual(instance.first_name, "John")
+            self.assertEqual(instance.last_name, "Doe")
+
+        # Test State creation
         with patch('sys.stdout', new=StringIO()) as f:
             self.cns.onecmd('create State name="California"')
-            self.assertEqual(36, len(f.getvalue().strip()))
-            self.cns.onecmd('show State ' + f.getvalue().strip())
-            self.assertIn("'name': 'California'", f.getvalue())
+            obj_id = f.getvalue().strip()
+            self.assertEqual(str(UUID(obj_id)), obj_id)
+            key = "State." + obj_id
+            self.assertIn(key, storage.all())
 
+            instance = storage.all()[key]
+            self.assertEqual(instance.name, "California")
+
+        # Test Place creation with parameters
         with patch('sys.stdout', new=StringIO()) as f:
             params = ('city_id="0001" user_id="0001" name="My_little_house" '
                       'number_rooms=4 number_bathrooms=2 max_guest=10 '
                       'price_by_night=300 latitude=37.773972 '
                       'longitude=-122.431297')
             self.cns.onecmd('create Place ' + params)
-            self.assertEqual(36, len(f.getvalue().strip()))
-            self.cns.onecmd('show Place ' + f.getvalue().strip())
-            self.assertIn("'city_id': '0001'", f.getvalue())
-            self.assertIn("'user_id': '0001'", f.getvalue())
+            obj_id = f.getvalue().strip()
+            self.assertEqual(str(UUID(obj_id)), obj_id)
 
-            self.assertIn("'name': 'My little house'", f.getvalue())
-            self.assertIn("'number_rooms': 4", f.getvalue())
-            self.assertIn("'number_bathrooms': 2", f.getvalue())
+            key = "Place." + obj_id
+            self.assertIn(key, storage.all())
+            instance = storage.all()[key]
+            self.assertEqual(instance.city_id, "0001")
+            self.assertEqual(instance.user_id, "0001")
+            self.assertEqual(instance.name, "My little house")
+            self.assertEqual(instance.number_rooms, 4)
+            self.assertEqual(instance.number_bathrooms, 2)
+            self.assertEqual(instance.max_guest, 10)
+            self.assertEqual(instance.price_by_night, 300)
+            self.assertEqual(instance.latitude, 37.773972)
+            self.assertEqual(instance.longitude, -122.431297)
 
-            self.assertIn("'max_guest': 10", f.getvalue())
-            self.assertIn("'price_by_night': 300", f.getvalue())
-            self.assertIn("'latitude': 37.773972", f.getvalue())
-            self.assertIn("'longitude': -122.431297", f.getvalue())
+        # Test City creation
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.cns.onecmd(
+                'create City name="San_Francisco" state_id="0001"'
+            )
+            obj_id = f.getvalue().strip()
+            self.assertEqual(str(UUID(obj_id)), obj_id)
+            key = "City." + obj_id
+
+            self.assertIn(key, storage.all())
+            instance = storage.all()[key]
+            self.assertEqual(instance.name, "San Francisco")
+            self.assertEqual(instance.state_id, "0001")
+
+        # Test Amenity creation
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.cns.onecmd('create Amenity name="WiFi"')
+            obj_id = f.getvalue().strip()
+            self.assertEqual(str(UUID(obj_id)), obj_id)
+            key = "Amenity." + obj_id
+            self.assertIn(key, storage.all())
+            instance = storage.all()[key]
+            self.assertEqual(instance.name, "WiFi")
+
+        # Test Review creation
+        with patch('sys.stdout', new=StringIO()) as f:
+            params = ('place_id="0001" user_id="0001" text="Great_place!"')
+            self.cns.onecmd('create Review ' + params)
+            obj_id = f.getvalue().strip()
+            self.assertEqual(str(UUID(obj_id)), obj_id)
+
+            key = "Review." + obj_id
+            self.assertIn(key, storage.all())
+            instance = storage.all()[key]
+            self.assertEqual(instance.place_id, "0001")
+            self.assertEqual(instance.user_id, "0001")
+            self.assertEqual(instance.text, "Great place!")
 
     def test_show(self):
         """Test the show command
