@@ -19,17 +19,17 @@ class TestConsole(unittest.TestCase):
     def setUpClass(cls):
         """Sets up the class
         """
-        storage._FileStorage__file_path = "test.json"
+        storage._FileStorage__file_path = "test.json"  # type: ignore
 
     def setUp(self):
         """Sets up each test
         """
         self.cns = HBNBCommand()
-        storage._FileStorage__objects = {}
+        storage.all().clear()
         if os.path.exists("test.json"):
             os.remove("test.json")
 
-    @unittest.skipUnless(sys.__stdin__.isatty(), "interactive mode only")
+    @unittest.skipUnless(sys.stdin.isatty(), "interactive mode only")
     def test_prompt(self):
         """Test the prompt
         """
