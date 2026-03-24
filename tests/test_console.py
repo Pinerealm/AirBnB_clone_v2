@@ -1,14 +1,15 @@
 #!/usr/bin/python3
 """Tests the command interpreter
 """
-from console import HBNBCommand
-from io import StringIO
-from models import storage
 import os
-
 import sys
 import unittest
+from io import StringIO
 from unittest.mock import patch
+from uuid import UUID
+
+from console import HBNBCommand
+from models import storage
 
 
 class TestConsole(unittest.TestCase):
