@@ -22,7 +22,7 @@ class HBNBCommand(cmd.Cmd):
         prompt (str): The command prompt
         classes (tuple): The list of classes that can be created
     """
-    prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
+    prompt = '(hbnb) ' if sys.stdin.isatty() else ''
     classes = {
                'BaseModel': BaseModel, 'User': User, 'Place': Place,
                'State': State, 'City': City, 'Amenity': Amenity,
@@ -41,7 +41,7 @@ class HBNBCommand(cmd.Cmd):
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
-        if not sys.__stdin__.isatty():
+        if not sys.stdin.isatty():
             print('(hbnb) ', end='')
         return line
 
