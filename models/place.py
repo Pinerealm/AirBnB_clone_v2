@@ -106,5 +106,5 @@ class Place(BaseModel, Base):
             """
             from .amenity import Amenity
 
-            if type(obj) == Amenity:
+            if type(obj) is Amenity:
                 self.amenity_ids.append(obj.id)

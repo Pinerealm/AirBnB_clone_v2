@@ -141,7 +141,8 @@ class HBNBCommand(cmd.Cmd):
                         continue
 
                     value = value.replace("_", " ")
-                    if len(value) >= 2 and value[0] == '"' and value[-1] == '"':
+                    if (len(value) >= 2
+                            and value[0] == '"' and value[-1] == '"'):
                         value = value[1:-1]
                     if key in self.types:
                         try:
