@@ -2,6 +2,7 @@
 """The console/command interpreter for the AirBnB_clone project"""
 
 import cmd
+import shlex
 from models import storage, storage_type
 from models.base_model import BaseModel
 from models.user import User
@@ -119,7 +120,11 @@ class HBNBCommand(cmd.Cmd):
         if not arg:
             print("** class name missing **")
             return
-        tokens = arg.split()
+        try:
+            tokens = shlex.split(arg)
+        except ValueError:
+            tokens = arg.split()
+
         if tokens[0] not in self.classes:
             print("** class doesn't exist **")
             return
@@ -128,12 +133,21 @@ class HBNBCommand(cmd.Cmd):
         if len(tokens) > 1:
             for i in range(1, len(tokens)):
                 if "=" in tokens[i]:
-                    key, value = tokens[i].split("=")
-                    value = value.replace("_", " ").replace('"', '"')
-                    if value[0] == '"' and value[-1] == '"':
+                    key, value = tokens[i].split("=", 1)
+                    if not key or not value:
+                        continue
+
+                    if " " in value:
+                        continue
+
+                    value = value.replace("_", " ")
+                    if len(value) >= 2 and value[0] == '"' and value[-1] == '"':
                         value = value[1:-1]
                     if key in self.types:
-                        value = self.types[key](value)
+                        try:
+                            value = self.types[key](value)
+                        except (ValueError, TypeError):
+                            continue
                     setattr(new_instance, key, value)
         print(new_instance.id)
         new_instance.save()
