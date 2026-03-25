@@ -1,10 +1,18 @@
 #!/usr/bin/python3
 """The DBStorage module
 """
-from ..base_model import Base
 import os
+
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.orm import scoped_session, sessionmaker
+
+from models import storage_type
+
+if storage_type == 'db':
+    from ..base_model import Base
+else:
+    print("DBStorage will not work without a database storage type set.")
+    os._exit(1)
 
 
 class DBStorage:
@@ -31,7 +39,7 @@ class DBStorage:
                                               HBNB_MYSQL_HOST, HBNB_MYSQL_DB),
                                       pool_pre_ping=True)
         if os.getenv('HBNB_ENV') == 'test':
-            Base.metadata.drop_all(self.__engine)
+            Base.metadata.drop_all(self.__engine)  # type: ignore
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage
@@ -47,14 +55,14 @@ class DBStorage:
         from ..user import User
 
         if cls is None:
-            objs = self.__session.query(State).all()
-            objs.extend(self.__session.query(City).all())
-            objs.extend(self.__session.query(User).all())
-            objs.extend(self.__session.query(Place).all())
-            objs.extend(self.__session.query(Review).all())
-            objs.extend(self.__session.query(Amenity).all())
+            objs = self.__session.query(State).all()  # type: ignore
+            objs.extend(self.__session.query(City).all())  # type: ignore
+            objs.extend(self.__session.query(User).all())  # type: ignore
+            objs.extend(self.__session.query(Place).all())  # type: ignore
+            objs.extend(self.__session.query(Review).all())  # type: ignore
+            objs.extend(self.__session.query(Amenity).all())  # type: ignore
         else:
-            objs = self.__session.query(cls).all()
+            objs = self.__session.query(cls).all()  # type: ignore
 
         return {'{}.{}'.format(type(obj).__name__, obj.id): obj
                 for obj in objs}
@@ -65,12 +73,12 @@ class DBStorage:
         Args:
             obj: The object to add
         """
-        self.__session.add(obj)
+        self.__session.add(obj)  # type: ignore
 
     def save(self):
         """Commits all changes in the current database session
         """
-        self.__session.commit()
+        self.__session.commit()  # type: ignore
 
     def delete(self, obj=None):
         """Deletes an object from the current database session
@@ -79,7 +87,7 @@ class DBStorage:
             obj: The object to delete
         """
         if obj is not None:
-            self.__session.delete(obj)
+            self.__session.delete(obj)  # type: ignore
 
     def reload(self):
         """Creates all tables in the database and creates the current
@@ -92,7 +100,7 @@ class DBStorage:
         from ..state import State
         from ..user import User
 
-        Base.metadata.create_all(self.__engine)
+        Base.metadata.create_all(self.__engine)  # type: ignore
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
         self.__session = scoped_session(session_factory)
@@ -100,4 +108,4 @@ class DBStorage:
     def close(self):
         """Closes the current database session
         """
-        self.__session.remove()
+        self.__session.remove()  # type: ignore
