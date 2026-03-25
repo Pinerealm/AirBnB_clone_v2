@@ -69,17 +69,18 @@ class TestConsole(unittest.TestCase):
             self.cns.onecmd("EOF")
             self.assertEqual("\n", f.getvalue())
 
-    def test_create(self):
-        """Test the create command
-        """
+    def test_create_errors(self):
+        """Test create command error handling."""
         with patch('sys.stdout', new=StringIO()) as f:
             self.cns.onecmd("create")
             self.assertEqual("** class name missing **\n", f.getvalue())
+
         with patch('sys.stdout', new=StringIO()) as f:
             self.cns.onecmd("create MyModel")
             self.assertEqual("** class doesn't exist **\n", f.getvalue())
 
-        # Test BaseModel creation
+    def test_create_basemodel(self):
+        """Test BaseModel creation."""
         with patch('sys.stdout', new=StringIO()) as f:
             self.cns.onecmd("create BaseModel")
             obj_id = f.getvalue().strip()
@@ -87,7 +88,8 @@ class TestConsole(unittest.TestCase):
             key = "BaseModel." + obj_id
             self.assertIn(key, storage.all())
 
-        # Test User creation with parameters
+    def test_create_user_with_parameters(self):
+        """Test User creation with parameters."""
         with patch('sys.stdout', new=StringIO()) as f:
             params = ('email="test@example.com" password="password" '
                       'first_name="John" last_name="Doe"')
@@ -103,18 +105,37 @@ class TestConsole(unittest.TestCase):
             self.assertEqual(instance.first_name, "John")
             self.assertEqual(instance.last_name, "Doe")
 
-        # Test State creation
+    def test_create_state_name_variants(self):
+        """Test State name parsing behavior for different value formats."""
         with patch('sys.stdout', new=StringIO()) as f:
             self.cns.onecmd('create State name="California"')
             obj_id = f.getvalue().strip()
             self.assertEqual(str(UUID(obj_id)), obj_id)
             key = "State." + obj_id
             self.assertIn(key, storage.all())
-
             instance = storage.all()[key]
             self.assertEqual(instance.name, "California")
 
-        # Test Place creation with parameters
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.cns.onecmd('create State name="San Francisco"')
+            obj_id = f.getvalue().strip()
+            self.assertEqual(str(UUID(obj_id)), obj_id)
+            key = "State." + obj_id
+            self.assertIn(key, storage.all())
+            instance = storage.all()[key]
+            self.assertEqual(instance.name, "")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.cns.onecmd('create State name="San_Francisco"')
+            obj_id = f.getvalue().strip()
+            self.assertEqual(str(UUID(obj_id)), obj_id)
+            key = "State." + obj_id
+            self.assertIn(key, storage.all())
+            instance = storage.all()[key]
+            self.assertEqual(instance.name, "San Francisco")
+
+    def test_create_place_with_parameters(self):
+        """Test Place creation with typed and string parameters."""
         with patch('sys.stdout', new=StringIO()) as f:
             params = ('city_id="0001" user_id="0001" name="My_little_house" '
                       'number_rooms=4 number_bathrooms=2 max_guest=10 '
@@ -137,7 +158,8 @@ class TestConsole(unittest.TestCase):
             self.assertEqual(instance.latitude, 37.773972)
             self.assertEqual(instance.longitude, -122.431297)
 
-        # Test City creation
+    def test_create_city_with_parameters(self):
+        """Test City creation with underscore-separated name."""
         with patch('sys.stdout', new=StringIO()) as f:
             self.cns.onecmd(
                 'create City name="San_Francisco" state_id="0001"'
@@ -151,7 +173,8 @@ class TestConsole(unittest.TestCase):
             self.assertEqual(instance.name, "San Francisco")
             self.assertEqual(instance.state_id, "0001")
 
-        # Test Amenity creation
+    def test_create_amenity_with_parameters(self):
+        """Test Amenity creation with name parameter."""
         with patch('sys.stdout', new=StringIO()) as f:
             self.cns.onecmd('create Amenity name="WiFi"')
             obj_id = f.getvalue().strip()
@@ -161,7 +184,8 @@ class TestConsole(unittest.TestCase):
             instance = storage.all()[key]
             self.assertEqual(instance.name, "WiFi")
 
-        # Test Review creation
+    def test_create_review_with_parameters(self):
+        """Test Review creation with place, user, and text params."""
         with patch('sys.stdout', new=StringIO()) as f:
             params = ('place_id="0001" user_id="0001" text="Great_place!"')
             self.cns.onecmd('create Review ' + params)
