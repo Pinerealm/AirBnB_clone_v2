@@ -21,12 +21,11 @@ class FileStorage:
         Args:
             cls (class): The class to filter for
         """
-        temp = {}
         if cls is not None:
-            for key, val in self.__objects.items():
-                if val.__class__ == cls:
-                    temp[key] = val
-            return temp
+            return {
+                key: val for key, val in self.__objects.items()
+                if val.__class__ == cls
+            }
         return self.__objects
 
     def new(self, obj):
@@ -59,12 +58,11 @@ class FileStorage:
         from ..user import User
 
         classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
         try:
-            temp = {}
             with open(self.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
@@ -80,9 +78,10 @@ class FileStorage:
         """
         if obj is None:
             return
-        key = obj.__class__.__name__ + '.' + obj.id
-        if key in self.all():
-            del self.all()[key]
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+        objects = self.all()
+        if key in objects:
+            del objects[key]
             self.save()
 
     def close(self):
