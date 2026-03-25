@@ -7,7 +7,7 @@ from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
 
 if storage_type == 'db':
-    place_amenity = Table('place_amenity', Base.metadata,
+    place_amenity = Table('place_amenity', Base.metadata,  # type: ignore
                           Column('place_id', String(60),
                                  ForeignKey('places.id'),
                                  primary_key=True, nullable=False),
@@ -33,9 +33,8 @@ class Place(BaseModel, Base):
         price_by_night (int): The price per night of the place
         latitude (float): The latitude of the place
         longitude (float): The longitude of the place
-        reviews (list): The list of Review objects linked to a place (db only)
+        reviews (list): The list of Review objects linked to a place
         amenities (list): The list of Amenity objects linked to a place
-                          (db only)
     """
     if storage_type == 'db':
         __tablename__ = "places"

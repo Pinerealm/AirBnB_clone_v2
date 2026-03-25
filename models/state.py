@@ -2,7 +2,6 @@
 """The state module
 """
 from .base_model import BaseModel, Base
-# from .city import City
 from models import storage_type, storage
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
