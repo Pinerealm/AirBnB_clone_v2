@@ -10,9 +10,6 @@ from models import storage_type
 
 if storage_type == 'db':
     from ..base_model import Base
-else:
-    print("DBStorage will not work without a database storage type set.")
-    os._exit(1)
 
 
 class DBStorage:

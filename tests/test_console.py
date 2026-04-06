@@ -9,9 +9,9 @@ from unittest.mock import patch
 from uuid import UUID
 
 from console import HBNBCommand
-from models import storage
+from models import storage, storage_type
 
-
+@unittest.skipIf(storage_type == 'db', "Only FileStorage tests are currently implemented")
 class TestConsole(unittest.TestCase):
     """Test the console module
     """
