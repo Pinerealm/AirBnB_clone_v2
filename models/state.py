@@ -29,6 +29,9 @@ class State(BaseModel, Base):
             """Gets the list of cities associated with the current state.
             """
             from .city import City
+            from .engine.file_storage import FileStorage
+
+            storage = FileStorage()
             city_list = []
             for value in storage.all(City).values():
                 if value.state_id == self.id:
