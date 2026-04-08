@@ -6,10 +6,13 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from models import storage_type
-
-if storage_type == 'db':
-    from ..base_model import Base
+from ..amenity import Amenity
+from ..base_model import Base
+from ..city import City
+from ..place import Place
+from ..review import Review
+from ..state import State
+from ..user import User
 
 
 class DBStorage:
@@ -44,13 +47,6 @@ class DBStorage:
         Args:
             cls (class): The class to filter for
         """
-        from ..amenity import Amenity
-        from ..city import City
-        from ..place import Place
-        from ..review import Review
-        from ..state import State
-        from ..user import User
-
         if cls is None:
             objs = self.__session.query(State).all()  # type: ignore
             objs.extend(self.__session.query(City).all())  # type: ignore
@@ -90,13 +86,6 @@ class DBStorage:
         """Creates all tables in the database and creates the current
         database session
         """
-        from ..amenity import Amenity
-        from ..city import City
-        from ..place import Place
-        from ..review import Review
-        from ..state import State
-        from ..user import User
-
         Base.metadata.create_all(self.__engine)  # type: ignore
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
