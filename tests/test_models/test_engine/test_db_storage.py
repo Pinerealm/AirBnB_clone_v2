@@ -250,3 +250,49 @@ class TestDBStorage(unittest.TestCase):
                 class_objects,
                 f"all({name}) should include newly saved {name} object"
             )
+
+    def test_delete_with_none_does_not_change_database(self):
+        """Test that delete(None) is a safe no-op."""
+        table_names = [table_name for _, table_name in self.MODEL_TABLES]
+        initial_counts = self._count_tables(table_names)
+
+        self.storage.delete(None)
+        self.storage.save()
+
+        final_counts = self._count_tables(table_names)
+        self.assertEqual(
+            final_counts,
+            initial_counts,
+            "delete(None) should not change database row counts"
+        )
+
+    def test_delete_removes_object_after_save(self):
+        """Test that delete(obj) removes object from DB after save()."""
+        token = uuid4().hex[:8]
+        user = User(
+            email=f"delete.{token}@example.com",
+            password="deletepwd123",
+            first_name="Delete",
+            last_name="Test"
+        )
+        self.storage.new(user)
+        self.storage.save()
+
+        self.assertIsNotNone(
+            self._get_row_by_id("users", user.id),
+            "User should exist in database before delete()"
+        )
+
+        self.storage.delete(user)
+
+        self.assertIsNotNone(
+            self._get_row_by_id("users", user.id),
+            "User should still exist in database until save() commits delete"
+        )
+
+        self.storage.save()
+
+        self.assertIsNone(
+            self._get_row_by_id("users", user.id),
+            "User should be removed from database after delete() and save()"
+        )
