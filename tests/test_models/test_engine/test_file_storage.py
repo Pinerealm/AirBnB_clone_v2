@@ -106,7 +106,9 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(self.fstore.reload(), None)
 
     def test_delete(self):
-        """ Object is deleted from __objects and file on disk when delete is called """
+        """Object is deleted from __objects and file on disk
+        when delete is called
+        """
         new = City()
         self.fstore.new(new)
         self.fstore.save()
