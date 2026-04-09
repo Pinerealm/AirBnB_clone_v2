@@ -1,34 +1,82 @@
 #!/usr/bin/python3
-""" """
-from tests.test_models.test_base_model import test_basemodel
+"""
+This module consists of all the possible test
+conditions for the class `User` class
+"""
+import datetime
+import unittest
+
+import pycodestyle
+
+import models
+from models.base_model import BaseModel
 from models.user import User
 
 
-class test_User(test_basemodel):
-    """ """
+class UserTest(unittest.TestCase):
+    """This test class contains all test methods """
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "User"
-        self.value = User
+    def test_instance(self):
+        """Check proper instance is created """
+        user1 = User()
+        self.assertIsInstance(user1, User)
 
-    def test_first_name(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.first_name), str)
+    def test_subclass(self):
+        """Make sure User class is a subclass of BaseModel class """
+        self.assertEqual(True, issubclass(User, BaseModel))
 
-    def test_last_name(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.last_name), str)
+    def test_class_attribute(self):
+        """Check all class attributes """
+        user1 = User(email="airbnb@mail.com", password="root",
+                     first_name="Betty", last_name="Bar")
+        self.assertEqual(user1.email, "airbnb@mail.com")
+        self.assertEqual(user1.password, "root")
+        self.assertEqual(user1.first_name, "Betty")
+        self.assertEqual(user1.last_name, "Bar")
 
-    def test_email(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.email), str)
+    def test_attribute_exist(self):
+        """Make sure attributes exist """
+        user1 = User()
+        self.assertTrue(hasattr(user1, 'email'))
+        self.assertTrue(hasattr(user1, 'password'))
+        self.assertTrue(hasattr(user1, 'first_name'))
+        self.assertTrue(hasattr(user1, 'last_name'))
+        self.assertTrue(hasattr(user1, 'id'))
+        self.assertTrue(hasattr(user1, 'created_at'))
+        self.assertTrue(hasattr(user1, 'updated_at'))
 
-    def test_password(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.password), str)
+    def test_class_attribute_pass_value(self):
+        """Check all class attributes """
+        user1 = User()
+        user1.first_name = "Betty"
+        user1.last_name = "Bar"
+        user1.email = "airbnb@mail.com"
+        user1.password = "root"
+
+        self.assertEqual(user1.first_name, "Betty")
+        self.assertEqual(user1.last_name, "Bar")
+        self.assertEqual(user1.email, "airbnb@mail.com")
+        self.assertEqual(user1.password, "root")
+
+    def test_has_right_attributes(self):
+        """Make sure if the type of the attribute is the right one"""
+        user1 = User(email="airbnb@mail.com", password="root",
+                     first_name="Betty", last_name="Bar")
+        self.assertIsInstance(user1.first_name, str)
+        self.assertIsInstance(user1.last_name, str)
+        self.assertIsInstance(user1.email, str)
+        self.assertIsInstance(user1.password, str)
+        self.assertIsInstance(user1.id, str)
+        self.assertIsInstance(user1.created_at, datetime.datetime)
+        self.assertIsInstance(user1.updated_at, datetime.datetime)
+
+    def test_doc(self):
+        """Check documentation """
+        self.assertIsNotNone(models.user.__doc__)  # type: ignore
+        self.assertIsNotNone(User.__doc__)
+
+    def test_pycodestyle(self):
+        """Check PEP 8 style """
+        style = pycodestyle.StyleGuide(quiet=True)
+        result = style.check_files(['models/user.py'])
+        self.assertEqual(result.total_errors, 0, "Found code style errors.")
